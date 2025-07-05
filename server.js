@@ -8,10 +8,20 @@ import application from './routes/application.routes.js'
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
+const allowedOrigins = [
+  "http://localhost:8080",
+  "https://tenderhub-frontend.vercel.app"
+];
 
 app.use(cors({
-  origin: 'http://localhost:8080', // frontend origin
-  credentials: true // only needed if you're using cookies
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
 }));
 app.use(express.json());
 

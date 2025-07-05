@@ -12,7 +12,6 @@ router.post("/create", async (req, res) => {
   try {
     const { title, description, category, budget, deadline, location } =
       req.body;
-    console.log(req.body);
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decoded.userId;
 

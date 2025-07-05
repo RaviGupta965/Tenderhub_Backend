@@ -7,7 +7,7 @@ dotenv.config();
 const router = express.Router();
 
 
-// routes/auth.js or directly in index.js
+// Create user route
 router.get("/profile", async (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
   if (!token) return res.status(401).json({ error: "Unauthorized" });
@@ -31,6 +31,23 @@ router.get("/profile", async (req, res) => {
   }
 });
 
+// Get all users
+router.get("/get-all", async (req, res) => {
+  try {
+    const users = await db("users").select(
+      "id",
+      "email",
+      "company_name as company",
+      "industry",
+      "description",
+      "location",
+      "website"
+    );
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 router.patch("/edit-profile", async (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
